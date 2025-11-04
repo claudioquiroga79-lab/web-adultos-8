@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Viaje de las Sufragistas: La Lucha por los Derechos Esenciales de la Mujer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Paleta de Colores: Verde (Primario), Naranja (Acento), Crema (Fondo) */
+        :root {
+            --color-primary: #10B981; /* Esmeralda/Verde */
+            --color-accent: #F59E0B; /* Ámbar/Naranja */
+            --color-background: #FEF3C7; /* Crema/Amarillo Suave */
+            --color-text: #1F2937; /* Gris Oscuro */
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+        }
+
+        h1, h2 {
+            font-family: 'Baloo 2', cursive;
+            color: var(--color-primary);
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #059669; /* Verde más oscuro */
+        }
+
+        .btn-primary:disabled {
+            background-color: #6EE7B7; /* Verde más claro */
+            cursor: not-allowed;
+        }
+
+        .progress-bar-fill {
+            transition: width 0.5s ease-in-out;
+            background-color: var(--color-accent);
+        }
+
+        .section-content {
+            min-height: 70vh; /* Asegura un área de contenido visible */
+        }
+        
+        .draggable {
+            cursor: grab;
+            background-color: white;
+            border-left: 5px solid var(--color-primary);
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .drop-target {
+            min-height: 2.5rem;
+            border: 2px dashed #9CA3AF;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem;
+            background-color: #F9FAFB;
+        }
+
+        .correct-answer {
+            background-color: #A7F3D0; /* Verde claro */
+            border-color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        .incorrect-answer {
+            background-color: #FEE2E2; /* Rojo claro */
+            border-color: #EF4444;
+        }
+
+        .highlight-correct {
+            border: 2px solid var(--color-primary);
+            background-color: #D1FAE5;
+        }
+
+        .word-cell {
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        .word-cell:hover:not(.word-found) {
+            background-color: #FDE68A; /* Ámbar claro en hover */
+        }
+        .word-found {
+            background-color: var(--color-accent);
+            color: white;
+            font-weight: 700;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
+        <div class="max-w-4xl mx-auto p-2">
+            <h1 class="text-xl font-bold text-center text-gray-800">El Viaje de las Sufragistas: Derechos Esenciales</h1>
+            <div id="progress-bar" class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                <div class="progress-bar-fill h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+            <p id="progress-text" class="text-sm text-center mt-1 text-gray-500">Paso 0 de 8</p>
+        </div>
+    </div>
+
+    <main id="game-content" class="max-w-4xl mx-auto mt-20">
+        <section id="page-0" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4 border-b-2 pb-2">Bienvenido a: El Viaje de las Sufragistas</h2>
+            <p class="mb-4 text-gray-700">Esta experiencia gamificada te sumergirá en la apasionante y brutal lucha de las mujeres por sus derechos, inspirada en la película **"Las Sufragistas"** y en el contexto de la conquista del voto femenino y el origen del 8M.</p>
+            <p class="mb-6 text-gray-700">Avanza, lee los capítulos y supera las actividades para desbloquear el siguiente nivel de conocimiento. ¡Tu progreso se guardará automáticamente!</p>
+            <div class="text-center">
+                <button class="btn-primary" onclick="navigate(1)">Comenzar Aventura 🚀</button>
+            </div>
+        </section>
+
+        <section id="page-1" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4">Capítulo 1: El Despertar de la Conciencia</h2>
+            <img src="https://files.catbox.moe/zu0ies.png" alt="Maud Watts en la lavandería" class="w-full h-auto max-h-96 object-cover my-4 rounded-lg shadow-lg">
+            
+            <p class="mb-4 text-lg font-medium text-gray-800">La Chispa en la Lavandería (1912)</p>
+            <p class="mb-4">La historia se centra en **Maud Watts**, una mujer de la clase trabajadora de East London, cuyo día a día transcurre entre las condiciones insalubres y el abuso constante en una lavandería. La directora, **Sarah Gavron**, buscó contar la historia a través de la mirada de estas mujeres obreras, aquellas que tenían, en palabras del movimiento, **"nada que perder"** al entrar en la lucha.</p>
+            <p class="mb-4">Maud es arrastrada al movimiento sufragista de forma casi accidental, por el compañerismo con otras mujeres y la indignación acumulada. Su primera gran acción es cuando se le pide que testifique ante un comité parlamentario. Allí, con una voz inicialmente temblorosa, relata su vida: su trabajo desde niña, las condiciones laborales precarias y la historia silenciada del abuso sexual por parte del jefe de la lavandería.</p>
+            <p class="mb-4">Este despertar tiene un alto costo personal. Su esposo, Ben, se siente avergonzado y temeroso de las represalias sociales y económicas. El conflicto estalla con sus repetidos arrestos, culminando cuando Ben, ante su incapacidad de comprender y apoyar la causa, la expulsa de la casa. Este primer acto de resistencia personal es impulsado por la **Sororidad** y la convicción de una causa colectiva, un valor fundamental para el movimiento.</p>
+            <div class="text-right mt-6">
+                <button class="btn-primary" onclick="navigate(2)">Continuar al Juego 1 (Secuencia) ➡️</button>
+            </div>
+        </section>
+
+        <section id="page-2" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4">Juego 1: Ordenar Secuencia</h2>
+            <p class="mb-4 text-gray-700">Arrastra y suelta los eventos para ordenarlos cronológicamente, basándote en el Capítulo 1. Tienes 3 intentos. (Intento: <span id="game1-attempt-count">1</span>/3)</p>
+            
+            <div id="sequence-game" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="draggable-items" class="bg-gray-100 p-4 rounded-lg shadow-inner">
+                    <h3 class="text-xl font-semibold mb-3">Eventos a Ordenar</h3>
+                    </div>
+                
+                <div id="drop-targets" class="bg-gray-100 p-4 rounded-lg shadow-inner">
+                    <h3 class="text-xl font-semibold mb-3">Orden Correcto</h3>
+                    <div id="target-1" class="drop-target" data-order="1">1.</div>
+                    <div id="target-2" class="drop-target" data-order="2">2.</div>
+                    <div id="target-3" class="drop-target" data-order="3">3.</div>
+                    <div id="target-4" class="drop-target" data-order="4">4.</div>
+                    <div id="target-5" class="drop-target" data-order="5">5.</div>
+                    <div id="target-6" class="drop-target" data-order="6">6.</div>
+                </div>
+            </div>
+
+            <p id="game1-feedback" class="mt-4 p-3 rounded-lg text-center font-bold hidden"></p>
+            
+            <div class="text-center mt-6">
+                <button id="game1-check-btn" class="btn-primary" onclick="checkSequence()">Comprobar Orden</button>
+            </div>
+            <div class="text-center mt-4">
+                <button id="game1-next-btn" class="btn-primary hidden" onclick="navigate(3)">Continuar al Capítulo 2 ➡️</button>
+            </div>
+        </section>
+
+        <section id="page-3" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4">Capítulo 2: Estrategias de Resistencia y Consecuencias Personales</h2>
+            <img src="https://files.catbox.moe/w7yun6.png" alt="Manos sufragistas esposadas en prisión" class="w-full h-auto max-h-96 object-cover my-4 rounded-lg shadow-lg">
+
+            <p class="mb-4 text-lg font-medium text-gray-800">El Precio de la Dignidad: Cárcel, Huelga y Pérdida</p>
+            <p class="mb-4">A medida que el movimiento crecía, sus tácticas de protesta se centraban en la desobediencia civil y el daño a la propiedad, como la quema de buzones, pero con la estricta directriz de **no causar daño físico a ninguna persona**. El objetivo era llamar la atención sin ser catalogadas como terroristas y, crucialmente, **evitar la creación de un mártir** que la policía intentaba impedir.</p>
+            <p class="mb-4">La respuesta de las autoridades fue brutal. Las sufragistas eran arrestadas y, al declararse en **huelga de hambre** como forma de protesta política, eran sometidas a la dolorosa y peligrosa **alimentación forzada** (una forma de tortura), que se practicaba con tubos. Paradójicamente, el detective a cargo de reprimirlas, al presenciar su convicción y sufrimiento, comenzaba a desarrollar un respeto por su causa, viéndolas como iguales en su determinación.</p>
+            <p class="mb-4">El drama personal de Maud alcanza su punto máximo cuando, tras su encarcelamiento, su esposo, incapaz de mantener a su hijo y sucumbiendo a la presión social, entrega al niño en **adopción**. La pérdida de su hijo en el día de su cumpleaños destruye a Maud, pero también forja su determinación final. Ella ya no lucha solo por el voto, sino por la posibilidad de un futuro donde las mujeres tengan la agencia legal sobre sus vidas y sus hijos.</p>
+            <div class="text-right mt-6">
+                <button class="btn-primary" onclick="navigate(4)">Continuar al Juego 2 (Palabras Clave) ➡️</button>
+            </div>
+        </section>
+
+        <section id="page-4" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4">Juego 2: Encuentra las Palabras Clave</h2>
+            <p class="mb-4 text-gray-700">Identifica y haz clic en las 5 palabras clave del Capítulo 2 que se encuentran ocultas en la cuadrícula. No es una sopa de letras tradicional, solo debes encontrar y hacer clic en la palabra correcta.</p>
+            
+            <div id="word-search-grid" class="grid grid-cols-5 gap-2 text-center text-xl font-mono p-4 bg-gray-100 rounded-lg">
+                </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-semibold mb-2">Palabras Encontradas: <span id="game2-words-found">0/5</span></h3>
+                <ul id="game2-found-list" class="flex flex-wrap gap-2">
+                    </ul>
+            </div>
+            
+            <p id="game2-feedback" class="mt-4 p-3 rounded-lg text-center font-bold hidden"></p>
+
+            <div class="text-center mt-6">
+                <button id="game2-next-btn" class="btn-primary hidden" onclick="navigate(5)">Continuar al Capítulo 3 ➡️</button>
+            </div>
+        </section>
+
+        <section id="page-5" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4">Capítulo 3: El Sacrificio que Cambió la Historia</h2>
+            <img src="https://files.catbox.moe/b5a53r.png" alt="Emily Davison en el Derby de Epsom" class="w-full h-auto max-h-96 object-cover my-4 rounded-lg shadow-lg">
+
+            <p class="mb-4 text-lg font-medium text-gray-800">El Martirio y la Victoria Colectiva</p>
+            <p class="mb-4">La frustración por la falta de visibilidad mediática, a pesar de sus acciones, llevó a un acto desesperado: aprovechar la aparición pública del Rey en una carrera de caballos para desplegar su bandera. Lo que ocurrió en el hipódromo se convirtió en el punto de inflexión que las autoridades temían.</p>
+            <p class="mb-4">La activista veterana **Emily Wilding Davison** se interpuso en el camino del caballo del Rey, resultando fatalmente herida y convirtiéndose en la mártir que el movimiento necesitaba para ser tomado en serio. Su sacrificio fue el catalizador: el funeral se convirtió en una manifestación masiva, demostrando la fuerza colectiva de la causa. Las imágenes de este evento, que no pudieron ser censuradas, llevaron la lucha a la conciencia pública mundial.</p>
+            <p class="mb-4">Catorce años después del evento central de la película, en **1928**, se logró finalmente la aprobación del voto femenino universal en el Reino Unido. Sin embargo, la lucha fue dispar en el mundo: en Chile, el voto se obtuvo recién en 1949, y en Arabia Saudita, no fue sino hasta 2015. La persistencia de la lucha se refleja también en la conmemoración del **8 de marzo (8M)**, que no es una celebración, sino la conmemoración de una masacre por incendio en una fábrica donde las mujeres estaban encerradas, recordándonos que los derechos nunca son adquiridos y requieren vigilancia constante.</p>
+            <div class="text-right mt-6">
+                <button class="btn-primary" onclick="navigate(6)">Continuar a la Evaluación Final ➡️</button>
+            </div>
+        </section>
+
+        <section id="page-6" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4">Evaluación Final: Comprensión Global</h2>
+            <p class="mb-4 text-gray-700">Responde las siguientes 3 preguntas de opción múltiple. La retroalimentación se mostrará inmediatamente. ¡Mucha suerte!</p>
+            
+            <div id="quiz-container">
+                </div>
+
+            <p id="quiz-feedback-global" class="mt-6 p-3 rounded-lg text-center font-bold hidden"></p>
+
+            <div class="text-center mt-6">
+                <button id="quiz-submit-btn" class="btn-primary" onclick="submitQuiz()">Finalizar Evaluación</button>
+            </div>
+            <div class="text-center mt-4">
+                <button id="quiz-next-btn" class="btn-primary hidden" onclick="navigate(7)">Ver Resultados 🏆</button>
+            </div>
+        </section>
+
+        <section id="page-7" class="section-content p-6 bg-white rounded-lg shadow-xl hidden">
+            <h2 class="text-3xl mb-4 text-center">¡Aventura Completada!</h2>
+            <div id="results-summary" class="bg-gray-100 p-6 rounded-lg shadow-inner mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2">Resumen de Desempeño</h3>
+                <p><strong>Cuestionario Final:</strong> <span id="final-score" class="font-bold text-xl text-green-600"></span></p>
+                <p><strong>Juego de Secuencia:</strong> <span id="game1-status" class="font-medium"></span></p>
+                <p><strong>Juego de Palabras Clave:</strong> <span id="game2-status" class="font-medium"></span></p>
+            </div>
+            
+            <p class="mb-4 text-center text-gray-700">Felicidades por completar el "Libro Gamificado". Puedes descargar un informe detallado de tu recorrido y resultados.</p>
+
+            <div class="text-center">
+                <button class="btn-primary bg-yellow-600 hover:bg-yellow-700" onclick="downloadReport()">Descargar Informe Detallado (HTML) ⬇️</button>
+            </div>
+        </section>
+
+    </main>
+    
+    <script>
+        // CONFIGURACIÓN GLOBAL
+        const TOTAL_PAGES = 8; // 0 a 7
+        const gameStatus = {
+            currentPage: 0,
+            completed: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false }, // Pages 1, 3, 5 are read. 2, 4, 6 are activities.
+            quizScore: 0,
+            game1Attempts: 0,
+            game1Completed: false,
+            game2Completed: false,
+            quizCompleted: false,
+            quizResults: []
+        };
+
+        // --- DATOS DE LOS JUEGOS ---
+
+        // Juego 1: Ordenar Secuencia (6 frases)
+        const sequencePhrases = [
+            { id: '1', text: 'Maud Watts trabaja en condiciones de abuso en la lavandería de East London.', order: 1 },
+            { id: '2', text: 'Maud es arrestada por primera vez durante una protesta del movimiento sufragista.', order: 5 },
+            { id: '3', text: 'Durante su discurso, relata las precarias condiciones de trabajo y el abuso sufrido.', order: 3 },
+            { id: '4', text: 'Su esposo, Ben, se muestra inflexible y temeroso ante la creciente implicación de Maud.', order: 4 },
+            { id: '5', text: 'Por casualidad, Maud es invitada a dar testimonio ante un comité parlamentario.', order: 2 },
+            { id: '6', text: 'El compañero de Maud, incapaz de lidiar con la situación, la expulsa de la casa familiar.', order: 6 }
+        ];
+
+        // Juego 2: Encuentra las Palabras Clave (5 palabras)
+        const keywordWords = ['SUFRAGIO', 'SORORIDAD', 'HUEGADEHAMBRE', 'TORTURA', 'ADOPCION'];
+        const wordSearchGridWords = [
+            'FUEGO', 'SUFRAGIO', 'LEY', 'MARZO', 'HIJO',
+            'ADOPCION', 'REPRENSION', 'VOTO', 'BEN', 'PROTESTA',
+            'SORORIDAD', 'CARCEL', 'TORTURA', 'REINA', 'ALIMENTACION',
+            'HUEGADEHAMBRE', 'LAVANDERIA', 'EMILY', 'MÁRTIR', 'RESCATE'
+        ]; // 20 words (5x4) for the grid
+
+        // Evaluación Final (3 preguntas)
+        const finalQuiz = [
+            {
+                q: '¿Cuál fue la acción que finalmente capturó la atención de la prensa mundial y sirvió de catalizador para el movimiento?',
+                options: [
+                    'La quema de buzones de correos por todo Londres.',
+                    'El sacrificio de Emily Davison interponiéndose en la carrera de caballos del Rey.',
+                    'Un discurso masivo de Emmeline Pankhurst en la plaza principal.'
+                ],
+                correctIndex: 1
+            },
+            {
+                q: '¿En qué año se logró la aprobación del voto femenino universal en el Reino Unido, según los créditos finales de la película?',
+                options: [
+                    '1912.',
+                    '1928.',
+                    '1949.'
+                ],
+                correctIndex: 1
+            },
+            {
+                q: '¿Qué simboliza la conmemoración del 8 de marzo (Día Internacional de la Mujer), según el contexto de la discusión?',
+                options: [
+                    'La victoria por el voto en 1928.',
+                    'La valentía de las mujeres líderes del movimiento.',
+                    'La conmemoración de una masacre por incendio en una fábrica con condiciones laborales precarias.'
+                ],
+                correctIndex: 2
+            }
+        ];
+
+        // --- FUNCIONES DE NAVEGACIÓN Y PROGRESO ---
+
+        function updateProgress() {
+            const progress = (gameStatus.currentPage / (TOTAL_PAGES - 1)) * 100;
+            document.querySelector('.progress-bar-fill').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `Paso ${gameStatus.currentPage} de ${TOTAL_PAGES - 1}`;
+        }
+
+        function navigate(page) {
+            if (page >= TOTAL_PAGES) return;
+
+            // Lógica de Desbloqueo Secuencial
+            if (page > gameStatus.currentPage && page > 1) {
+                const prevPage = page - 1;
+                // Verificar si la actividad o lectura anterior fue completada
+                if (prevPage === 2 && !gameStatus.game1Completed) return alert('Debes completar el Juego 1 para continuar.');
+                if (prevPage === 4 && !gameStatus.game2Completed) return alert('Debes completar el Juego 2 para continuar.');
+                if (prevPage === 6 && !gameStatus.quizCompleted) return alert('Debes finalizar la Evaluación Final para continuar.');
+            }
+
+            // Ocultar página actual y mostrar nueva
+            document.getElementById(`page-${gameStatus.currentPage}`).classList.add('hidden');
+            gameStatus.currentPage = page;
+            document.getElementById(`page-${gameStatus.currentPage}`).classList.remove('hidden');
+
+            // Marcar como completada la lectura/actividad anterior si aplica
+            if (page % 2 !== 0 && page > 1) { // Capítulos (1, 3, 5)
+                gameStatus.completed[page] = true;
+            }
+
+            updateProgress();
+            
+            // Inicializar juegos si es necesario
+            if (page === 2) initializeGame1();
+            if (page === 4) initializeGame2();
+            if (page === 6) initializeQuiz();
+            if (page === 7) showResults();
+        }
+
+        // --- LÓGICA DEL JUEGO 1: ORDENAR SECUENCIA ---
+
+        function initializeGame1() {
+            const container = document.getElementById('draggable-items');
+            container.innerHTML = '<h3 class="text-xl font-semibold mb-3">Eventos a Ordenar</h3>';
+            
+            // Mezclar las frases
+            const shuffled = [...sequencePhrases].sort(() => Math.random() - 0.5);
+
+            shuffled.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'draggable p-2 bg-white rounded shadow-md mt-1';
+                div.draggable = true;
+                div.id = `drag-${item.id}`;
+                div.setAttribute('data-order', item.order);
+                div.textContent = item.text;
+                container.appendChild(div);
+            });
+
+            addDragListeners();
+            document.getElementById('game1-attempt-count').textContent = gameStatus.game1Attempts + 1;
+            document.getElementById('game1-feedback').classList.add('hidden');
+            document.getElementById('game1-check-btn').classList.remove('hidden');
+            document.getElementById('game1-next-btn').classList.add('hidden');
+
+            // Reset targets
+            document.querySelectorAll('.drop-target').forEach(target => {
+                target.innerHTML = `${target.getAttribute('data-order')}.`;
+                target.classList.remove('correct-answer', 'incorrect-answer');
+            });
+        }
+
+        function addDragListeners() {
+            const draggables = document.querySelectorAll('.draggable');
+            const dropTargets = document.querySelectorAll('.drop-target');
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', () => draggable.classList.add('dragging'));
+                draggable.addEventListener('dragend', () => draggable.classList.remove('dragging'));
+            });
+
+            dropTargets.forEach(target => {
+                target.addEventListener('dragover', e => e.preventDefault());
+                target.addEventListener('drop', e => {
+                    e.preventDefault();
+                    const dragged = document.querySelector('.dragging');
+                    if (target.children.length === 0) {
+                        target.appendChild(dragged);
+                    } else {
+                        // Swap logic
+                        const currentChild = target.children[0];
+                        document.getElementById('draggable-items').appendChild(currentChild);
+                        target.innerHTML = `${target.getAttribute('data-order')}.`;
+                        target.appendChild(dragged);
+                    }
+                    target.classList.remove('bg-gray-200');
+                });
+            });
+        }
+
+        function checkSequence() {
+            gameStatus.game1Attempts++;
+            document.getElementById('game1-attempt-count').textContent = gameStatus.game1Attempts;
+
+            let correctCount = 0;
+            const feedbackElement = document.getElementById('game1-feedback');
+            const checkButton = document.getElementById('game1-check-btn');
+            const nextButton = document.getElementById('game1-next-btn');
+
+            document.querySelectorAll('.drop-target').forEach(target => {
+                target.classList.remove('correct-answer', 'incorrect-answer');
+                const droppedItem = target.querySelector('.draggable');
+                
+                if (droppedItem) {
+                    const expectedOrder = parseInt(target.getAttribute('data-order'));
+                    const actualOrder = parseInt(droppedItem.getAttribute('data-order'));
+
+                    if (expectedOrder === actualOrder) {
+                        correctCount++;
+                        target.classList.add('correct-answer');
+                        target.classList.remove('incorrect-answer');
+                    } else {
+                        target.classList.add('incorrect-answer');
+                        target.classList.remove('correct-answer');
+                    }
+                } else {
+                    target.classList.add('incorrect-answer');
+                }
+            });
+
+            feedbackElement.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700');
+
+            if (correctCount === sequencePhrases.length) {
+                feedbackElement.textContent = '¡Correcto! Has ordenado la secuencia con éxito.';
+                feedbackElement.classList.add('bg-green-100', 'text-green-700');
+                gameStatus.game1Completed = true;
+                checkButton.classList.add('hidden');
+                nextButton.classList.remove('hidden');
+            } else if (gameStatus.game1Attempts >= 3) {
+                feedbackElement.textContent = 'Has agotado los 3 intentos. La secuencia correcta se muestra a continuación.';
+                feedbackElement.classList.add('bg-red-100', 'text-red-700');
+                showCorrectSequence();
+                gameStatus.game1Completed = true;
+                checkButton.classList.add('hidden');
+                nextButton.classList.remove('hidden');
+            } else {
+                feedbackElement.textContent = `Incorrecto. ${correctCount}/${sequencePhrases.length} correctas. Inténtalo de nuevo.`;
+                feedbackElement.classList.add('bg-red-100', 'text-red-700');
+            }
+        }
+
+        function showCorrectSequence() {
+            const correctOrder = sequencePhrases.sort((a, b) => a.order - b.order);
+            document.querySelectorAll('.drop-target').forEach((target, index) => {
+                target.innerHTML = `<span class="font-bold text-gray-800">${index + 1}.</span> ${correctOrder[index].text}`;
+                target.classList.remove('incorrect-answer');
+                target.classList.add('correct-answer');
+            });
+            document.getElementById('draggable-items').innerHTML = '<p class="text-sm text-gray-500">Secuencia mostrada para el aprendizaje.</p>';
+        }
+
+        // --- LÓGICA DEL JUEGO 2: ENCUENTRA PALABRAS CLAVE ---
+
+        let game2FoundWords = new Set();
+        
+        function initializeGame2() {
+            game2FoundWords = new Set();
+            document.getElementById('game2-words-found').textContent = '0/5';
+            document.getElementById('game2-found-list').innerHTML = '';
+            document.getElementById('game2-feedback').classList.add('hidden');
+            document.getElementById('game2-next-btn').classList.add('hidden');
+
+            const gridContainer = document.getElementById('word-search-grid');
+            gridContainer.innerHTML = '';
+
+            wordSearchGridWords.forEach(word => {
+                const div = document.createElement('div');
+                div.className = 'word-cell border border-gray-300 p-2 rounded-lg';
+                div.textContent = word;
+                div.setAttribute('data-word', word);
+                div.onclick = () => checkWord(word, div);
+                gridContainer.appendChild(div);
+            });
+
+            gameStatus.game2Completed = false; // Reset status on re-initialization
+        }
+
+        function checkWord(word, element) {
+            if (game2FoundWords.has(word)) return; // Already found
+
+            if (keywordWords.includes(word)) {
+                game2FoundWords.add(word);
+                element.classList.add('word-found');
+                element.classList.remove('word-cell');
+                
+                // Update found count
+                document.getElementById('game2-words-found').textContent = `${game2FoundWords.size}/5`;
+
+                // Add to found list
+                const li = document.createElement('li');
+                li.className = 'px-3 py-1 text-sm rounded-full bg-orange-400 text-white font-semibold';
+                li.textContent = word;
+                document.getElementById('game2-found-list').appendChild(li);
+
+                if (game2FoundWords.size === keywordWords.length) {
+                    document.getElementById('game2-feedback').textContent = '¡Felicidades! Has encontrado todas las palabras clave.';
+                    document.getElementById('game2-feedback').classList.remove('hidden');
+                    document.getElementById('game2-next-btn').classList.remove('hidden');
+                    gameStatus.game2Completed = true;
+                }
+            } else {
+                element.classList.add('bg-red-300');
+                setTimeout(() => element.classList.remove('bg-red-300'), 500);
+            }
+        }
+
+        // --- LÓGICA DE LA EVALUACIÓN FINAL ---
+
+        function initializeQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML = '';
+            gameStatus.quizResults = [];
+            gameStatus.quizCompleted = false;
+            document.getElementById('quiz-feedback-global').classList.add('hidden');
+            document.getElementById('quiz-submit-btn').classList.remove('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            finalQuiz.forEach((qData, qIndex) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'mb-6 p-4 bg-gray-50 rounded-lg shadow';
+                qDiv.innerHTML = `<p class="font-bold mb-3 text-gray-800">Pregunta ${qIndex + 1}: ${qData.q}</p>`;
+
+                qData.options.forEach((option, oIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'mb-2';
+                    optionDiv.innerHTML = `
+                        <input type="radio" id="q${qIndex}o${oIndex}" name="q${qIndex}" value="${oIndex}" class="hidden peer" onchange="enableSubmit()">
+                        <label for="q${qIndex}o${oIndex}" class="block p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 transition duration-150">
+                            ${option}
+                        </label>
+                    `;
+                    qDiv.appendChild(optionDiv);
+                });
+                quizContainer.appendChild(qDiv);
+            });
+            document.getElementById('quiz-submit-btn').disabled = true;
+        }
+        
+        function enableSubmit() {
+            // Check if all questions have an answer selected
+            let allAnswered = true;
+            finalQuiz.forEach((_, qIndex) => {
+                const name = `q${qIndex}`;
+                if (!document.querySelector(`input[name="${name}"]:checked`)) {
+                    allAnswered = false;
+                }
+            });
+            document.getElementById('quiz-submit-btn').disabled = !allAnswered;
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const feedbackGlobal = document.getElementById('quiz-feedback-global');
+            gameStatus.quizResults = [];
+
+            finalQuiz.forEach((qData, qIndex) => {
+                const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
+                const optionsContainer = document.querySelectorAll(`input[name="q${qIndex}"]`);
+                const qDiv = optionsContainer[0].closest('.shadow');
+                
+                // Clear previous feedback classes
+                qDiv.classList.remove('border-green-500', 'border-red-500');
+
+                if (selected) {
+                    const selectedIndex = parseInt(selected.value);
+                    const isCorrect = selectedIndex === qData.correctIndex;
+                    gameStatus.quizResults.push({ question: qIndex + 1, correct: isCorrect });
+                    
+                    if (isCorrect) {
+                        score++;
+                        qDiv.classList.add('border-4', 'border-green-500', 'bg-green-50');
+                    } else {
+                        qDiv.classList.add('border-4', 'border-red-500', 'bg-red-50');
+                        // Resaltar la correcta y la incorrecta
+                        optionsContainer.forEach((opt, oIndex) => {
+                            const label = opt.nextElementSibling;
+                            label.classList.remove('highlight-correct', 'incorrect-answer', 'peer-checked:border-red-500');
+                            if (oIndex === qData.correctIndex) {
+                                label.classList.add('highlight-correct');
+                            }
+                            if (oIndex === selectedIndex) {
+                                label.classList.add('incorrect-answer');
+                            }
+                        });
+                    }
+                }
+            });
+
+            gameStatus.quizScore = score;
+            gameStatus.quizCompleted = true;
+            document.getElementById('quiz-submit-btn').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+
+            feedbackGlobal.textContent = `Puntuación Final: ${score} de ${finalQuiz.length}.`;
+            feedbackGlobal.className = score === finalQuiz.length ? 'mt-6 p-3 rounded-lg text-center font-bold bg-green-100 text-green-700' : 'mt-6 p-3 rounded-lg text-center font-bold bg-red-100 text-red-700';
+            feedbackGlobal.classList.remove('hidden');
+
+            // Deshabilitar radio buttons después de la revisión
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+        }
+
+        // --- FUNCIÓN DE RESULTADOS Y REPORTE ---
+        
+        function showResults() {
+            document.getElementById('final-score').textContent = `${gameStatus.quizScore}/${finalQuiz.length}`;
+            
+            const g1Status = gameStatus.game1Completed ? (gameStatus.game1Attempts <= 3 ? `Superado en ${gameStatus.game1Attempts} intentos.` : 'Superado (Respuesta revelada).') : 'No completado.';
+            const g2Status = gameStatus.game2Completed ? 'Superado.' : 'No completado.';
+            
+            document.getElementById('game1-status').textContent = g1Status;
+            document.getElementById('game2-status').textContent = g2Status;
+        }
+
+        function downloadReport() {
+            const date = new Date().toLocaleDateString('es-ES');
+            const time = new Date().toLocaleTimeString('es-ES');
+            
+            const reportContent = `
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Informe de Resultados - El Viaje de las Sufragistas</title>
+                    <style>
+                        body { font-family: 'Poppins', sans-serif; line-height: 1.6; padding: 20px; background-color: #f7f7f7; color: #333; }
+                        .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+                        h1 { color: #10B981; border-bottom: 2px solid #F59E0B; padding-bottom: 10px; }
+                        h2 { color: #F59E0B; margin-top: 25px; }
+                        .score { font-size: 1.5em; font-weight: bold; color: ${gameStatus.quizScore === finalQuiz.length ? '#10B981' : '#EF4444'}; }
+                        .result-item { padding: 10px; border-left: 5px solid #ccc; margin-bottom: 10px; background: #f9f9f9; }
+                        .correct { border-left-color: #10B981; }
+                        .incorrect { border-left-color: #EF4444; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>Informe Detallado: El Viaje de las Sufragistas</h1>
+                        <p><strong>Fecha y Hora de Finalización:</strong> ${date} - ${time}</p>
+                        
+                        <h2>Resumen General</h2>
+                        <ul>
+                            <li><strong>Cuestionario Final:</strong> <span class="score">${gameStatus.quizScore}/${finalQuiz.length}</span> respuestas correctas.</li>
+                            <li><strong>Juego de Secuencia:</strong> ${document.getElementById('game1-status').textContent} (Intentos: ${gameStatus.game1Attempts})</li>
+                            <li><strong>Juego de Palabras Clave:</strong> ${document.getElementById('game2-status').textContent}</li>
+                        </ul>
+
+                        <h2>Detalle de la Evaluación Final</h2>
+                        ${finalQuiz.map((q, i) => `
+                            <div class="result-item ${gameStatus.quizResults[i]?.correct ? 'correct' : 'incorrect'}">
+                                <p><strong>Pregunta ${i + 1}:</strong> ${q.q}</p>
+                                <p><strong>Estado:</strong> ${gameStatus.quizResults[i]?.correct ? '✅ Correcta' : '❌ Incorrecta'}</p>
+                                <p><strong>Respuesta Correcta:</strong> ${q.options[q.correctIndex]}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([reportContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Informe_Sufragistas_${date.replace(/\//g, '-')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // --- INICIALIZACIÓN ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            navigate(0); // Inicia en la página de bienvenida
+        });
+    </script>
+</body>
+</html>
