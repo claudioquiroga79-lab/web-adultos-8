@@ -453,11 +453,11 @@
             /* 16:9 Aspect Ratio */
             padding-top: 56.25%; 
             position: relative;
-            margin: 1.5rem 0; /* Espacio antes y después del video */
+            margin: 1.5rem 0 0; /* Espacio superior */
             background-color: black; /* Fondo mientras carga */
             border-radius: 8px;
-            box-shadow: var(--shadow);
-            grid-column: 1 / -1; /* Asegura que ocupe todo el ancho en el grid de modulos-container */
+            /* box-shadow: var(--shadow); /* Sombra la da la tarjeta padre */
+            /* grid-column: 1 / -1; /* Ancho lo da la tarjeta padre */
         }
 
         /* ESTILOS AÑADIDOS PARA LA PRIMERA ETAPA */
@@ -469,8 +469,11 @@
         /* FIN ESTILOS AÑADIDOS */
 
         /* ESTILO AÑADIDO: Asegura que el bloque de la segunda etapa ocupe todo el ancho */
-        .video-responsive-container + a.modulo-link {
-            grid-column: 1 / -1;
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card,
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card,
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card + a.modulo-link,
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card + a.modulo-link + a.modulo-link {
+            grid-column: 1 / -1; /* Hace que los bloques de la segunda etapa ocupen todo el ancho */
         }
         /* FIN ESTILO AÑADIDO */
 
@@ -509,6 +512,19 @@
                 width: 100%;
             }
         }
+
+        /* --- INICIO: MODIFICACIÓN BOTÓN RÚBRICA --- */
+        /* Este código apunta específicamente al botón (.btn) dentro 
+          de la quinta tarjeta de objetivos (.objetivo-card:nth-of-type(5)).
+        */
+        .objetivos-container .objetivo-card:nth-of-type(5) .btn {
+            display: block;       /* 1. Lo convierte en un elemento de bloque. */
+            width: fit-content;   /* 2. Hace que el ancho del bloque se ajuste a su contenido. */
+            margin-left: auto;    /* 3. Centra el bloque horizontalmente. */
+            margin-right: auto;   /* 4. Centra el bloque horizontalmente. */
+            margin-top: 1rem;     /* 5. Añade espacio en la parte superior (para bajarlo). */
+        }
+        /* --- FIN: MODIFICACIÓN BOTÓN RÚBRICA --- */
     </style>
 </head>
 <body>
@@ -575,12 +591,18 @@
                 <article class="objetivo-card">
                     <h3>RUBRICA DE EVALUACIÓN:</h3>
                     <p>Para conocer como se te va a evaluar presiona el boton.</p>
-                   
+                    <a href="https://drive.google.com/file/d/1fQhjNsECzPIHn1X9HDMMVvzehySDM824/view" class="btn" target="_blank" rel="noopener noreferrer">Ir a Rubrica</a>
+                </article>
+                <article class="objetivo-card">
+                    <h3>CAPACIDADES A DESARROLLAR:</h3>
+                    <p>CAPACIDAD 1: Interpretar los contextos históricos, políticos, sociales y culturales, en los que se actúa para identificar variables intervinientes, formular hipótesis y generar estrategias de transformación social.</p>
+                    <p>CAPACIDAD 2: Reflexionar críticamente acerca del mundo del trabajo y sus problemáticas para entenderlo como derecho humano.</p>
+                     <p>CAPACIDAD 3: Reconocer la diversidad cultural para la construcción de una sociedad justa y diversa en el marco de los derechos humanos.</p>
+                     <p>CAPACIDAD 4: Reconocerse como ser político para desempeñarse en el entorno social.<p>                    
                 </article>
 
             </div>
         </section>
-
         
 
         <section id="intro-itinerario" style="text-align: center; padding-bottom: 1rem;">
@@ -595,19 +617,21 @@
                 ¡Prepara tu bolso de equipaje y da el primer paso hacia
                 tu transformación!
             </p>
-             <a href="https://padlet.com/profelauraontiveros2024/proyecto-asociado-al-mundo-del-trabajo-pensemos-mpkqfxk05w52vqkn" class="btn" target="_blank" rel="noopener noreferrer">Comenzar la Expedición</a>
+             <a href="https://padlet.com/profelauraontiveros2024/proyecto-asociado-al-mundo-del-trabajo-pensemos-mpkqfxk05w52vqkn" class="btn" target="_blank" rel="noopener noreferrer">Ir a Actividad 1: Comenzamos la Expedición</a>
         </section>
 
 
         <section id="itinerario">
             <h2 class="section-title">Itinerario de Aprendizaje (Etapas)</h2>
             <div class="modulos-container">
-                <h3 class="etapa-heading">PRIMERA ETAPA: Definiendo el territorio y calibrando la Brújula</h3>
-                <article class="modulo-card">
+                <h3 class="etapa-heading">PRIMERA ETAPA: Definiendo el territorio y calibrando la Brújula
+                <p></strong>Duración Dos Semanas</strong></p></h3>
+                    <article class="modulo-card">
                     <div class="modulo-header">
                         <h3>1:El reconocimiento del territorio</h3>
                     </div>
                     <div class="modulo-body">
+                        <p>Conectando conceptos con la realidad laboral: armamos nuestro propio glosario y nos introducimos a la alfabetización digital.</p>
                         <p><strong>Actividad:</strong> Exploración y debate sobre el concepto de Trabajo (Glosario)y la Alfabetización Digital.</p>
                         <p><strong>Objetivo:</strong> Diagnóstico de ideas previas. Familiarización con el entorno virtual y la tarea interactiva.</p>                        
                         <iframe src="https://h5p.org/h5p/embed/1547005" width="1090" height="404" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *" title="Glosario del Trabajo"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
@@ -642,32 +666,93 @@
                         Ahora, es momento de reconocer cuánto aprendiste. 
                         Para ello, te propongo la siguiente actividad que se trata de rellenar las partes en blanco (puede ir una palabra o una frase breve).</p>                                              
                         <iframe src="https://h5p.org/h5p/embed/1547010" width="1090" height="600" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *" title="¿Qué aprendimos?"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
+                    
                     </div>
                     <div class="modulo-footer">
                         <span>Momentos: Inicio (Sincrónico),</span>
                         <div class="modulo-number">3</div>
                     </div>
                 </article>
-                <h3 class="etapa-heading">SEGUNDA ETAPA: Siguiendo el sendero de una narrativa transmedia</h3>
 
-                <div class="video-responsive-container">
-                    <iframe src="https://drive.google.com/file/d/1bC_P5D6wXzrbxH75k-VTcokLxK7nJh4_/preview" allowfullscreen></iframe>
-                </div>
+                <h3 class="etapa-heading">SEGUNDA ETAPA: Siguiendo el sendero de la historia: Explorando el trabajo y las luchas de mujeres y hombres obreros. Duración dos Semanas</h3>
+
+                <article class="modulo-card">
+                        <div class="modulo-header">
+                            <h3>1. Evolución histórica del Mundo del Trabajo</h3>
+                        </div>
+                        <div class="modulo-body">
+
+                            <p><strong>El Origen de la Injusticia: de la Definición (Fase 1) a la Realidad (Fase 2): Expedición a la Desigualdad Laboral”</strong><p>
+                             <p>¿Por qué el trabajo no es igual para todos? ¿Cómo influyen los estereotipos y la desigualdad de género en el acceso y reconocimiento del trabajo?<p>
+                             <p>Bienvenidos a la SEGUNDA ETAPA, donde las herramientas digitales que vamos aprendiendo se convierten en nuestra brújula para el análisis crítico.<p>   
+                             <p>El objetivo de este desafío es que logren identificar críticamente fuentes de información digital confiables y utilicen herramientas digitales colaborativas para vincular los conceptos abstractos del mundo laboral con la realidad histórica y social.<p>                            
+                           <iframe src="https://h5p.org/h5p/embed/1547183" width="1090" height="2619" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *" title="Esta Etapa 2 subir"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
+                        </div>
+                        <div class="modulo-footer">
+                            <span>Material interactivo H5P</span>
+                            <div class="modulo-number">1</div>
+                        </div>
+                </article>
+
+                <article class="modulo-card">
+                    <div class="modulo-header">
+                        <h3>2. Película: "Las Sufragistas"</h3>
+                    </div>
+                    <div class="modulo-body">
+                        <p><strong>Veremos la película Las Sufragistas, que nos muestra las condiciones laborales y sociales de las mujeres trabajadoras en el Reino Unido a principios del siglo XX.</strong><p>
+                             <p>Vamos a pensar y analizar sobre:<p>
+                             <p>¿Cómo se manifiesta el Trabajo No Registrado en la vida de las protagonistas?<p>   
+                             <p>¿Qué derechos del Artículo 14 bis de la Constitución Argentina no existían para ellas?<p>
+                             <p>¿Cómo el esfuerzo de la lucha que vemos en la película nos ayuda a entender la etimología de la palabra “Trabajo” (tripalium, ligado al sufrimiento)?</p>                                       
+                        <div class="video-responsive-container">
+                            <iframe src="https://drive.google.com/file/d/1bC_P5D6wXzrbxH75k-VTcokLxK7nJh4_/preview" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="modulo-footer">
+                        <span>Contenido: Video</span>
+                        <div class="modulo-number">2</div>
+                    </div>
+                </article>
+
                 <a href="./las sufrajistas 2.html" target="_blank" rel="noopener noreferrer" class="modulo-link">
                     <article class="modulo-card">
                         <div class="modulo-header">
-                            <h3>La inmersión en la trama</h3>
+                            <h3>3. La inmersión en la trama</h3>
                         </div>
                         <div class="modulo-body">
-                            <p><strong>Actividad:</strong> Indagación crítica (película "Las Sufragistas"), Actividad interactiva al hacer Clic.</p>
-                            <p><strong>Objetivo:</strong> Identificar críticamente fuentes de información digital confiables. Avance a producción multimedia.</p>
+                            <p><strong>Actividad:</strong> Indagación crítica (película "Las Sufragistas"),</p>
+                            <p><strong>Juego interactivo: Repaso</strong></p>
                         </div>
-                        <div classs="modulo-footer">
+                        <div class="modulo-footer">
                             <span>Para continuar trabajando los conceptos hacer clic para experiencia interactiva</span>
-                            <div class="modulo-number">1</div>
+                            <div class="modulo-number">3</div>
                         </div>
                     </article>
                 </a>
+                
+                <a href="https://padlet.com/licenciadayprofelaura/muestra-de-nuestras-creaciones-o3zyy5ere47op5gm" target="_blank" rel="noopener noreferrer" class="modulo-link">
+                    <article class="modulo-card">
+                        <div class="modulo-header">
+                            <h3>4. Investigación crítica y producción colaborativa</h3>
+                        </div>
+                        <div class="modulo-body">
+                            <p><strong>TU EXPERIENCIA, NUESTRO TERRITORIO</strong><p>
+                            <p>El conocimiento se construye en red.<p>
+                            <p>Vamos a analizar la desigualdad usando las herramientas digitales más demandadas en el trabajo, realizando una búsqueda e investigación en internet de material  relacionado (videos, series, obras) con el foco en la selección de información confiable, para luego poder crear de presentación digital y compartir los descubrimientos sobre los cambios laborales a lo largo de la historia, haciendo foco en el rol de la mujer.<p>
+                            <p><strong>Pasos</strong><p>
+                            <p>1.Investigación Digital: con la colaboración de los docentes, realizarán búsquedas e investigarán material relacionado con la evolución del rol de la mujer en el mundo laboral (videos, series, obras de arte). ¡Recuerden aplicar criterios de veracidad! Deben seleccionar información confiable (esto lo aprenderemos en clases).<p>
+                            <p>2.Construcción Colectiva: se reunirán en equipos para crear una presentación digital colaborativa (en Google Slides o similar) sobre los cambios históricos de los derechos laborales y/o del rol de la mujer en el mundo laboral, basándose en la información fiable que encontraron y citando al menos dos términos clave de nuestro Glosario (Fase 1).<p>
+                            <p>3.Construcción Personal: se propone realizar una storybook (o “Libro de Historias”) de alguna experiencia personal (vas a encontrar las instrucciones en el muro colaborativo de Padlet “Muestras de nuestras creaciones”).<p>
+                            <p>4.Socialización (Padlet): finalmente, compartiremos sus producciones digitales en el muro “Muestras de nuestras creaciones”, siguiendo los ejemplos que dejó la profesora (RECUERDEN: deben hacer dos intervenciones: una en equipo y otra individual). Esta socialización nos permitirá descubrir lo que otros equipos investigaron y debatir sobre lo compartido.<p>
+    
+                        </div>
+                        <div class="modulo-footer">
+                            <span>Ir a Padlet de nuestras creaciones Hacer CLIC</span>
+                            <div class="modulo-number">4</div>
+                            </div>
+                    </article>
+                </a>
+                
                 <h3 class="etapa-heading">TERCERA ETAPA: Construyendo faros visuales y simulando el entorno laboral</h3>
                 <article class="modulo-card">
                     <div class="modulo-header">
@@ -675,7 +760,7 @@
                     </div>
                     <div class="modulo-body">
                         <p><strong>Actividad:</strong> Creación de **infografías en Canva** sobre la evolución histórica del trabajo.</p>
-                        <p><strong>Objetivo:</strong> Aplicación de herramientas para organizar y visualizar conocimiento (recursos hipermediales).</p>
+                        <p><strong>Objetivo:</strong> Aplicación de herramientas para organizar y visualizar conocimiento (recursos hypermediales).</p>
                     </div>
                     <div class="modulo-footer">
                         <span>Momentos: Inicio (Sincrónico), Desarrollo (Asincrónico), Cierre (Presencial)</span>
@@ -687,7 +772,7 @@
                         <h3>Fase 4: Desarrollo de competencias laborales específicas</h3>
                     </div>
                     <div class="modulo-body">
-                        <p><strong>Actividad:</strong> Taller de **Ofimática (Word/Excel)**. Creación de **Currículum Vitae** y **simulación de entrevista**.</p>
+                        <p><strong>Actividad:</strong> Taller de Ofimática (Word/Excel). Creación de Currículum Vitae y **simulación de entrevista**.</p>
                         <p><strong>Objetivo:</strong> Desarrollo de habilidades instrumentales para la inserción laboral y gestión documental.</p>
                     </div>
                     <div class="modulo-footer">
@@ -830,7 +915,3 @@
                     }
                 });
             });
-        });
-    </script>
-</body>
-</html>
