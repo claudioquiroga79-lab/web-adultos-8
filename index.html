@@ -35,7 +35,7 @@
         
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 16px;
             line-height: 1.6;
             color: var(--text);
             background-color: var(--light-bg);
@@ -87,20 +87,6 @@
             padding: 2px; /* Pequeño padding para visualización */
         }
         /* FIN DE ESTILOS MODIFICADOS */
-        
-        /* .logo-icon se mantiene por si se quiere volver a usar el logo de texto, pero no se usa en el HTML */
-        /* .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 1.5rem;
-        } */
         
         .logo-text h1 {
             font-size: 1.8rem;
@@ -468,14 +454,15 @@
         }
         /* FIN ESTILOS AÑADIDOS */
 
-        /* ESTILO AÑADIDO: Asegura que el bloque de la segunda etapa ocupe todo el ancho */
-        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card,
-        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card,
-        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card + a.modulo-link,
-        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card + a.modulo-link + a.modulo-link {
+        /* ESTILO MODIFICADO: Asegura que todos los bloques de la segunda etapa ocupen todo el ancho */
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card, /* Card 1 */
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card, /* Nueva Card 1.5 */
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card + article.modulo-card, /* Card 2 */
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card + article.modulo-card + a.modulo-link, /* Card 3 (link) */
+        .modulos-container h3.etapa-heading:nth-of-type(2) + article.modulo-card + article.modulo-card + article.modulo-card + a.modulo-link + a.modulo-link { /* Card 4 (link) */
             grid-column: 1 / -1; /* Hace que los bloques de la segunda etapa ocupen todo el ancho */
         }
-        /* FIN ESTILO AÑADIDO */
+        /* FIN ESTILO MODIFICADO */
 
         .video-responsive-container iframe {
             border: 0;
@@ -486,6 +473,24 @@
             width: 100%;
         }
         /* FIN NUEVO ESTILO */
+
+        /* --- INICIO: NUEVO ESTILO PARA GALERÍA DE IMÁGENES --- */
+        .image-gallery-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que las imágenes se apilen en pantallas pequeñas */
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .image-gallery-container img {
+            flex: 1 1 300px; /* Crece, se encoge, base de 300px (permite responsive) */
+            width: 100%; /* Asegura que no se desborde */
+            height: auto;
+            object-fit: contain; /* MODIFICADO: 'contain' para que se vea completa */
+            border-radius: 8px;
+            /* box-shadow: var(--shadow); /* Opcional: la tarjeta padre ya tiene sombra */
+        }
+        /* --- FIN: NUEVO ESTILO PARA GALERÍA DE IMÁGENES --- */
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -511,6 +516,11 @@
             .info-card {
                 width: 100%;
             }
+
+            /* Ajuste para que el flex-basis funcione bien en móvil */
+            .image-gallery-container img {
+                flex-basis: 100%; /* Fuerza a cada imagen a tomar el 100% en móvil */
+            }
         }
 
         /* --- INICIO: MODIFICACIÓN BOTÓN RÚBRICA --- */
@@ -525,6 +535,64 @@
             margin-top: 1rem;     /* 5. Añade espacio en la parte superior (para bajarlo). */
         }
         /* --- FIN: MODIFICACIÓN BOTÓN RÚBRICA --- */
+
+        /* --- INICIO: ESTILOS PARA EL ASISTENTE TOOLTIP --- */
+        #asistente-tooltip {
+            position: fixed; /* Se mueve con la ventana, no con la página */
+            z-index: 2000;   /* Asegura que esté por encima de todo */
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.8rem 0.8rem 0.8rem 1.2rem; /* Ajustado para el botón */
+            border-radius: 8px;
+            font-size: 1rem; /* Un poco más grande para que se lea bien */
+            font-weight: 600;
+            max-width: 300px;
+            box-shadow: var(--shadow);
+            
+            /* Oculto por defecto, ahora es 'flex' para alinear texto y botón */
+            display: none;
+            align-items: center;
+            gap: 0.8rem;
+
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            
+            /* MODIFICACIÓN CLAVE: 
+               Ahora el contenedor SÍ recibe eventos de puntero, 
+               para que 'mouseover' sobre él funcione.
+            */
+            pointer-events: auto; 
+        }
+
+        #asistente-texto {
+            flex-grow: 1; /* El texto ocupa el espacio disponible */
+        }
+
+        #asistente-lector-btn {
+            /* Hacemos el botón 'visible' a los clics */
+            pointer-events: auto; 
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0; /* Evita que el botón se encoja */
+        }
+
+        #asistente-lector-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #asistente-lector-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--white);
+        }
+        /* --- FIN: ESTILOS PARA EL ASISTENTE TOOLTIP --- */
     </style>
 </head>
 <body>
@@ -556,44 +624,65 @@
             <p>(Historia I – Construcción de la Ciudadanía – Geografía I – Proyecto Asociado al Mundo del Trabajo I).</p>
            
             <div class="course-info">
-                <div class="info-card">
+                <div class="info-card" data-tooltip="El curso combina clases presenciales con actividades virtuales que puedes hacer a tu ritmo.">
                     <h3>Modalidad</h3>
                     <p>Híbrida (Presencial y Asincrónica)</p>
                 </div>
-                <div class="info-card">
+                <div class="info-card" data-tooltip="Este módulo se completa en un cuatrimestre.">
                     <h3>Duración</h3>
                     <p>Cuatrimestral</p>
                 </div>
             </div>
         </section>
 
+        <!-- ===== INICIO DE LA NUEVA SECCIÓN DE VIDEO ===== -->
+        <section id="campus-video" style="background-color: var(--white);">
+            <h2 class="section-title">Conoce Nuestro Campus</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem; color: var(--text-light); line-height: 1.6;">
+                Te damos la bienvenida a nuestro espacio. Mira este breve video para conocer las instalaciones y el ambiente de la Escuela de Adultos 8.
+            </p>
+            
+            
+            <div class="video-responsive-container" style="max-width: 900px; margin: 0 auto; background-color: #000; border-radius: 12px; box-shadow: var(--shadow);">
+                <iframe 
+                    src="https://www.youtube.com/embed/EXDiUGsBfvs?si=vwHdyPlZFtztZ85y" 
+                    title="Video de Presentación del Campus" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+        <!-- ===== FIN DE LA NUEVA SECCIÓN DE VIDEO ===== -->
+
+
         <section id="objetivos">
             <h2 class="section-title">Datos de la Expedición</h2>
             <div class="objetivos-container">
-                <article class="objetivo-card">
+                <article class="objetivo-card" data-tooltip="Este es el concepto central que exploraremos en todo el módulo.">
                     <h3>EJE TEMÁTICO</h3>
                     <p>La transformación laboral desde una mirada crítica.</p>
                 </article>
-                <article class="objetivo-card">
+                <article class="objetivo-card" data-tooltip="Este es el problema o la situación real que analizaremos.">
                     <h3>CONTEXTO PROBLEMATIZADOR:</h3>
                     <p>El mundo del trabajo en la nueva configuración social, política y cultural: discriminación y estereotipos en las relaciones de género.</p>
                 </article>
-                <article class="objetivo-card">
+                <article class="objetivo-card" data-tooltip="La ESI nos acompaña para analizar las temáticas desde una perspectiva de género y derechos.">
                     <h3>EJE TRANSVERSAL:</h3>
                     <p>Educación Sexual Integral</p>
                 </article>
-                <article class="objetivo-card">
+                <article class="objetivo-card" data-tooltip="Aquí puedes ver por qué este módulo es importante para tu formación.">
                     <h3>RELEVANCIA MODULAR:</h3>
                     <p>Conocer el proceso histórico donde la “mujer” a partir de su lucha, obtuvo los derechos civiles en igualdad de condiciones al “varón”.</p>
                     <p>Contribuir a la deconstrucción de estereotipos que giran en torno al género.</p>
                     <p>Comprender las nuevas relaciones sociales, políticas y culturales que se dan a partir de cambios en el mundo del trabajo a lo largo de la historia.</p>
                 </article>
-                <article class="objetivo-card">
+                <article class="objetivo-card" data-tooltip="¡Importante! Haz clic en el botón 'Ir a Rúbrica' para entender cómo se evaluará tu progreso.">
                     <h3>RUBRICA DE EVALUACIÓN:</h3>
                     <p>Para conocer como se te va a evaluar presiona el boton.</p>
                     <a href="https://drive.google.com/file/d/1fQhjNsECzPIHn1X9HDMMVvzehySDM824/view" class="btn" target="_blank" rel="noopener noreferrer">Ir a Rubrica</a>
                 </article>
-                <article class="objetivo-card">
+                <article class="objetivo-card" data-tooltip="Estas son las habilidades y conocimientos que desarrollarás al completar el módulo.">
                     <h3>CAPACIDADES A DESARROLLAR:</h3>
                     <p>CAPACIDAD 1: Interpretar los contextos históricos, políticos, sociales y culturales, en los que se actúa para identificar variables intervinientes, formular hipótesis y generar estrategias de transformación social.</p>
                     <p>CAPACIDAD 2: Reflexionar críticamente acerca del mundo del trabajo y sus problemáticas para entenderlo como derecho humano.</p>
@@ -617,16 +706,16 @@
                 ¡Prepara tu bolso de equipaje y da el primer paso hacia
                 tu transformación!
             </p>
-             <a href="https://padlet.com/profelauraontiveros2024/proyecto-asociado-al-mundo-del-trabajo-pensemos-mpkqfxk05w52vqkn" class="btn" target="_blank" rel="noopener noreferrer">Ir a Actividad 1: Comenzamos la Expedición</a>
+             <a href="https://padlet.com/profelauraontiveros2024/proyecto-asociado-al-mundo-del-trabajo-pensemos-mpkqfxk05w52vqkn" class="btn" target="_blank" rel="noopener noreferrer" data-tooltip="¡Este es el primer paso! Haz clic aquí para ir a la actividad inicial en Padlet y comenzar la expedición.">Ir a Actividad 1: Comenzamos la Expedición</a>
         </section>
 
 
         <section id="itinerario">
             <h2 class="section-title">Itinerario de Aprendizaje (Etapas)</h2>
             <div class="modulos-container">
-                <h3 class="etapa-heading">PRIMERA ETAPA: Definiendo el territorio y calibrando la Brújula
+                <h3 class="etapa-heading">PRIMERA FASE: Definiendo el territorio y calibrando la Brújula
                 <p></strong>Duración Dos Semanas</strong></p></h3>
-                    <article class="modulo-card">
+                    <article class="modulo-card" data-tooltip="Actividad interactiva: Explora los conceptos clave y pon a prueba tus ideas previas sobre el mundo del trabajo.">
                     <div class="modulo-header">
                         <h3>1:El reconocimiento del territorio</h3>
                     </div>
@@ -641,7 +730,7 @@
                         <div class="modulo-number">1</div>
                     </div>
                 </article>
-                <a href="https://www.canva.com/design/DAG3FpDNXC8/gN6GTeolOcRWV4dYIdtk0Q/edit" target="_blank" rel="noopener noreferrer" class="modulo-link">
+                <a href="https://www.canva.com/design/DAG3FpDNXC8/gN6GTeolOcRWV4dYIdtk0Q/edit" target="_blank" rel="noopener noreferrer" class="modulo-link" data-tooltip="¡Clic aquí! Irás a una pizarra de Canva para construir nuestro glosario colaborativo. Es una actividad en equipo.">
                     <article class="modulo-card">
                         <div class="modulo-header">
                             <h3>2: El Establecimiento de las coordenadas</h3>
@@ -656,7 +745,7 @@
                         </div>
                     </article>
                 </a>
-                <article class="modulo-card">
+                <article class="modulo-card" data-tooltip="Actividad interactiva: Rellena los espacios en blanco para repasar y fijar lo que aprendiste en la primera etapa.">
                     <div class="modulo-header">
                         <h3>3:Repasemos</h3>
                     </div>
@@ -674,9 +763,9 @@
                     </div>
                 </article>
 
-                <h3 class="etapa-heading">SEGUNDA ETAPA: Siguiendo el sendero de la historia: Explorando el trabajo y las luchas de mujeres y hombres obreros. Duración dos Semanas</h3>
+                <h3 class="etapa-heading">SEGUNDA FASE: Siguiendo el sendero de la historia: Explorando el trabajo y las luchas de mujeres y hombres obreros. Duración dos Semanas</h3>
 
-                <article class="modulo-card">
+                <article class="modulo-card" data-tooltip="Material interactivo: Un recorrido por la historia del trabajo y la desigualdad. ¡Navega por el contenido H5P!">
                         <div class="modulo-header">
                             <h3>1. Evolución histórica del Mundo del Trabajo</h3>
                         </div>
@@ -686,7 +775,7 @@
                              <p>¿Por qué el trabajo no es igual para todos? ¿Cómo influyen los estereotipos y la desigualdad de género en el acceso y reconocimiento del trabajo?<p>
                              <p>Bienvenidos a la SEGUNDA ETAPA, donde las herramientas digitales que vamos aprendiendo se convierten en nuestra brújula para el análisis crítico.<p>   
                              <p>El objetivo de este desafío es que logren identificar críticamente fuentes de información digital confiables y utilicen herramientas digitales colaborativas para vincular los conceptos abstractos del mundo laboral con la realidad histórica y social.<p>                            
-                           <iframe src="https://h5p.org/h5p/embed/1547183" width="1090" height="2619" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *" title="Esta Etapa 2 subir"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
+                           <iframe src="https://h5p.org/h5p/embed/1547183" width="1090" height="514" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *" title="Esta Etapa 2 subir"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
                         </div>
                         <div class="modulo-footer">
                             <span>Material interactivo H5P</span>
@@ -694,7 +783,25 @@
                         </div>
                 </article>
 
-                <article class="modulo-card">
+                <article class="modulo-card" data-tooltip="Imágenes ilustrativas de la segunda etapa.">
+                    <div class="modulo-header">
+                        <h3>Galería de Imágenes</h3>
+                    </div>
+                    <div class="modulo-body">
+                        <p>Imágenes relacionadas con la exploración histórica del trabajo.</p>
+                        <div class="image-gallery-container">
+                            <img src="https://files.catbox.moe/r91lxv.jpeg" 
+                                 alt="Ilustración de la segunda etapa">
+                            <img src="https://files.catbox.moe/5mbelx.jpeg" 
+                                 alt="Ilustración adicional de la segunda etapa">
+                        </div>
+                    </div>
+                    <div class="modulo-footer">
+                        <span>Recursos Visuales</span>
+                        <div class="modulo-number">1.5</div>
+                    </div>
+                </article>
+                <article class="modulo-card" data-tooltip="Contenido: Mira la película 'Las Sufragistas' para analizar las condiciones laborales y la lucha por los derechos.">
                     <div class="modulo-header">
                         <h3>2. Película: "Las Sufragistas"</h3>
                     </div>
@@ -714,7 +821,7 @@
                     </div>
                 </article>
 
-                <a href="https://claudioquiroga79-lab.github.io/web-adultos-8/lassufragistas.html" target="_blank" rel="noopener noreferrer" class="modulo-link">
+                <a href="https://claudioquiroga79-lab.github.io/web-adultos-8/lassufragistas.html" target="_blank" rel="noopener noreferrer" class="modulo-link" data-tooltip="¡Clic aquí! Irás a un juego interactivo para repasar los conceptos de la película y la segunda etapa.">
                     <article class="modulo-card">
                         <div class="modulo-header">
                             <h3>3. La inmersión en la trama</h3>
@@ -730,7 +837,7 @@
                     </article>
                 </a>
                 
-                <a href="https://padlet.com/licenciadayprofelaura/muestra-de-nuestras-creaciones-o3zyy5ere47op5gm" target="_blank" rel="noopener noreferrer" class="modulo-link">
+                <a href="https://padlet.com/licenciadayprofelaura/muestra-de-nuestras-creaciones-o3zyy5ere47op5gm" target="_blank" rel="noopener noreferrer" class="modulo-link" data-tooltip="¡Clic aquí! Irás a nuestro muro de Padlet para investigar y compartir tus creaciones (individuales y en equipo).">
                     <article class="modulo-card">
                         <div class="modulo-header">
                             <h3>4. Investigación crítica y producción colaborativa</h3>
@@ -738,11 +845,11 @@
                         <div class="modulo-body">
                             <p><strong>TU EXPERIENCIA, NUESTRO TERRITORIO</strong><p>
                             <p>El conocimiento se construye en red.<p>
-                            <p>Vamos a analizar la desigualdad usando las herramientas digitales más demandadas en el trabajo, realizando una búsqueda e investigación en internet de material  relacionado (videos, series, obras) con el foco en la selección de información confiable, para luego poder crear de presentación digital y compartir los descubrimientos sobre los cambios laborales a lo largo de la historia, haciendo foco en el rol de la mujer.<p>
+                            <p>Vamos a analizar la desigualdad usando las herramientas digitales más demandadas en el trabajo, realizando una búsqueda e investigación en internet de material  relacionado (videos, series, obras) con el foco en la selección de información confiable, para luego poder crear de presentation digital y compartir los descubrimientos sobre los cambios laborales a lo largo de la historia, haciendo foco en el rol de la mujer.<p>
                             <p><strong>Pasos</strong><p>
                             <p>1.Investigación Digital: con la colaboración de los docentes, realizarán búsquedas e investigarán material relacionado con la evolución del rol de la mujer en el mundo laboral (videos, series, obras de arte). ¡Recuerden aplicar criterios de veracidad! Deben seleccionar información confiable (esto lo aprenderemos en clases).<p>
                             <p>2.Construcción Colectiva: se reunirán en equipos para crear una presentación digital colaborativa (en Google Slides o similar) sobre los cambios históricos de los derechos laborales y/o del rol de la mujer en el mundo laboral, basándose en la información fiable que encontraron y citando al menos dos términos clave de nuestro Glosario (Fase 1).<p>
-                            <p>3.Construcción Personal: se propone realizar una storybook (o “Libro de Historias”) de alguna experiencia personal (vas a encontrar las instrucciones en el muro colaborativo de Padlet “Muestras de nuestras creaciones”).<p>
+                            <p>3.Construción Personal: se propone realizar una storybook (o “Libro de Historias”) de alguna experiencia personal (vas a encontrar las instrucciones en el muro colaborativo de Padlet “Muestras de nuestras creaciones”).<p>
                             <p>4.Socialización (Padlet): finalmente, compartiremos sus producciones digitales en el muro “Muestras de nuestras creaciones”, siguiendo los ejemplos que dejó la profesora (RECUERDEN: deben hacer dos intervenciones: una en equipo y otra individual). Esta socialización nos permitirá descubrir lo que otros equipos investigaron y debatir sobre lo compartido.<p>
     
                         </div>
@@ -753,8 +860,8 @@
                     </article>
                 </a>
                 
-                <h3 class="etapa-heading">TERCERA ETAPA: Construyendo faros visuales y simulando el entorno laboral</h3>
-                <article class="modulo-card">
+                <h3 class="etapa-heading">TERCERA FASE: Construyendo faros visuales y simulando el entorno laboral</h3>
+                <article class="modulo-card" data-tooltip="Actividad de Taller: Aprenderemos a usar Canva para crear infografías y organizar la información visualmente.">
                     <div class="modulo-header">
                         <h3>Fase 3: Construcción de evidencia y mapeo visual</h3>
                     </div>
@@ -767,7 +874,7 @@
                         <div class="modulo-number">3</div>
                     </div>
                 </article>
-                <article class="modulo-card">
+                <article class="modulo-card" data-tooltip="Actividad de Taller: ¡Prepárate para el mundo laboral! Aquí crearemos tu CV y practicaremos para una entrevista.">
                     <div class="modulo-header">
                         <h3>Fase 4: Desarrollo de competencias laborales específicas</h3>
                     </div>
@@ -780,7 +887,7 @@
                         <div class="modulo-number">4</div>
                     </div>
                 </article>
-                <article class="modulo-card">
+                <article class="modulo-card" data-tooltip="Actividad de Taller: Crearemos tu perfil profesional en LinkedIn para gestionar tu identidad digital.">
                     <div class="modulo-header">
                         <h3>Fase 5: Conquista de la Identidad Digital</h3>
                     </div>
@@ -793,7 +900,7 @@
                         <div class="modulo-number">5</div>
                     </div>
                 </article>
-                <article class="modulo-card">
+                <article class="modulo-card" data-tooltip="Proyecto Final: Integra todo lo aprendido creando una revista digital. ¡Es el gran cierre de la expedición!">
                     <div class="modulo-header">
                         <h3>Fase 6: La Bitácora de la Expedición</h3>
                     </div>
@@ -812,25 +919,25 @@
         <section id="recursos">
             <h2 class="section-title">Recursos para la Expedición</h2>
             <div class="recursos-container">
-                <article class="recurso-card">
+                <article class="recurso-card" data-tooltip="Haz clic en el botón para ver tutoriales sobre las herramientas de Google que usaremos.">
                     <div class="recurso-icon">💻</div>
                     <h3>Plataforma Google</h3>
                     <p>Acceso a Tutoriales.</p>
                     <button class="btn" onclick="window.open('https://view.genially.com/68feb2dc87f26e6b789df70d/interactive-content-tutoriales-modulo-c-adultos-8', '_blank')">Herramientas de Google</button>
                 </article>
-                <article class="recurso-card">
+                <article class="recurso-card" data-tooltip="El botón te llevará a Canva, la herramienta que usaremos para diseñar infografías y más.">
                     <div class="recurso-icon">🎨</div>
                     <h3>Herramientas de Creación</h3>
                     <p>Canva para el diseño de infografías y materiales visuales, facilitando la síntesis y el mapeo conceptual.</p>
                     <button class="btn">Diseñar en Canva</button>
                 </article>
-                <article class="recurso-card">
+                <article class="recurso-card" data-tooltip="El botón te llevará a Padlet, donde crearemos muros colaborativos para compartir ideas.">
                     <div class="recurso-icon">🤝</div>
                     <h3>Entornos Colaborativos</h3>
                     <p>Padlet para muros de colaboración y foros de debate, promoviendo el interaprendizaje y la construcción colectiva.</p>
                     <button class="btn">Acceder a Padlet</button>
                 </article>
-                <article class="recurso-card">
+                <article class="recurso-card" data-tooltip="El botón te llevará a LinkedIn para crear tu perfil profesional.">
                     <div class="recurso-icon">🔗</div>
                     <h3>Redes Profesionales</h3>
                     <p>LinkedIn para la creación de la identidad digital profesional y la expansión del escenario de aprendizaje al mundo laboral.</p>
@@ -843,7 +950,7 @@
             <h2 class="section-title">Contacto y Matrícula</h2>
             <p style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">Si estás interesado/a en la próxima expedición o tienes consultas sobre el itinerario, puedes contactar al equipo a través del siguiente formulario o enviando un correo.</p>
             <div style="text-align: center;">
-                <button class="btn">Contactar al Equipo</button>
+                <button class="btn" data-tooltip="Haz clic aquí para enviar un mensaje al equipo del curso. (Función no implementada aún).">Contactar al Equipo</button>
             </div>
         </section>
     </main>
@@ -859,6 +966,17 @@
             </div>
         </div>
     </footer>
+
+    <div id="asistente-tooltip">
+        <span id="asistente-texto"></span>
+        <button id="asistente-lector-btn" title="Leer en voz alta">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.536 14.01A8.47 8.47 0 0 0 14.026 8a8.47 8.47 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/>
+                <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.707.707z"/>
+                <path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.489 3.489 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/>
+            </svg>
+        </button>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -888,30 +1006,143 @@
                         const buttonText = this.textContent;
                         // Cambiado de alert a console.log para cumplir con buenas prácticas
                         console.log(`Clic en botón genérico: ${buttonText}. Implementar funcionalidad.`);
-                        // Nota: Si el usuario desea que estos botones hagan algo, deberá proveer el href o la lógica.
                     }
                 });
             });
 
 
             // Script para permitir navegación por teclado y activar con Enter/Espacio
-            const focusableElements = 'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])';
-            
-            // El selector ahora incluye tanto tarjetas simples como enlaces que contienen tarjetas
             document.querySelectorAll('.modulo-card, .objetivo-card, a.modulo-link').forEach(card => {
-                // Si ya es un enlace, no necesita tabindex="0", pero se asegura para las article/cards
                 if (card.tagName !== 'A') {
                     card.setAttribute('tabindex', '0');
                 }
                 
                 card.addEventListener('keydown', function(e) {
-                    // Si es una tarjeta (article) envuelta en un enlace (a.modulo-link), el evento debe ir al enlace padre
                     const targetElement = this.tagName === 'ARTICLE' && this.closest('a.modulo-link') ? this.closest('a.modulo-link') : this;
                     
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        // Simular clic en el elemento que tiene la acción (el enlace o la tarjeta)
                         targetElement.click();
                     }
                 });
             });
+
+            /* --- INICIO: LÓGICA DEL ASISTENTE TOOLTIP Y LECTOR DE VOZ (CORREGIDA) --- */
+
+            // 1. Inicializar la Síntesis de Voz
+            const synth = window.speechSynthesis;
+
+            // 2. Seleccionar los elementos del asistente
+            const tooltipAsistente = document.getElementById('asistente-tooltip');
+            const tooltipTexto = document.getElementById('asistente-texto');
+            const tooltipLectorBtn = document.getElementById('asistente-lector-btn');
+            
+            let textoParaLeer = '';
+            let hideTimer; // Temporizador para ocultar
+            
+            if (tooltipAsistente && tooltipTexto && tooltipLectorBtn) { 
+                const elementosConAyuda = document.querySelectorAll('[data-tooltip]');
+
+                // 3. Función para mover el asistente (solo se usa 1 vez)
+                function moverAsistente(evento) {
+                    // Posicionamiento inicial cerca del cursor
+                    let x = evento.clientX + 15;
+                    let y = evento.clientY + 15;
+
+                    // Ajuste para que no se salga de la pantalla (derecha)
+                    if (x + tooltipAsistente.offsetWidth + 20 > window.innerWidth) {
+                        x = evento.clientX - tooltipAsistente.offsetWidth - 15;
+                    }
+                    // Ajuste para que no se salga de la pantalla (abajo)
+                    if (y + tooltipAsistente.offsetHeight + 20 > window.innerHeight) {
+                        y = evento.clientY - tooltipAsistente.offsetHeight - 15;
+                    }
+
+                    tooltipAsistente.style.left = x + 'px';
+                    tooltipAsistente.style.top = y + 'px';
+                }
+
+                // 4. Función para iniciar el temporizador de ocultar
+                function startHideTimer() {
+                    clearTimeout(hideTimer);
+                    // Espera 300ms antes de empezar a ocultar
+                    hideTimer = setTimeout(() => {
+                        tooltipAsistente.style.opacity = '0';
+                        synth.cancel(); // Detiene la lectura si se está ocultando
+                        
+                        // Espera a que termine la transición de opacidad para ocultarlo
+                        setTimeout(() => {
+                            tooltipAsistente.style.display = 'none';
+                        }, 200); // Coincide con la transición de CSS (aunque no está definida, es una buena práctica)
+                    }, 300); 
+                }
+
+                // 5. Función para cancelar el temporizador de ocultar
+                function cancelHideTimer() {
+                    clearTimeout(hideTimer);
+                }
+
+                // 6. Agrega los "escuchadores" de eventos a cada tarjeta
+                elementosConAyuda.forEach(elemento => {
+                    
+                    // Cuando el cursor entra EN LA TARJETA
+                    elemento.addEventListener('mouseover', (e) => {
+                        cancelHideTimer(); // Cancela cualquier temporizador de ocultar pendiente
+
+                        const textoAyuda = elemento.getAttribute('data-tooltip');
+                        
+                        textoParaLeer = textoAyuda;
+                        tooltipTexto.textContent = textoAyuda;
+                        
+                        tooltipAsistente.style.display = 'flex';
+                        
+                        // Posiciona el cuadro una sola vez
+                        moverAsistente(e); 
+                        
+                        // Muestra con opacidad (para transición)
+                        requestAnimationFrame(() => {
+                            tooltipAsistente.style.opacity = '1';
+                        });
+                        
+                        // ¡¡PROBLEMA SOLUCIONADO!!
+                        // La siguiente línea está COMENTADA. 
+                        // Esto evita que el globo persiga al cursor.
+                        // elemento.addEventListener('mousemove', moverAsistente); 
+                    });
+
+                    // Cuando el cursor sale DE LA TARJETA
+                    elemento.addEventListener('mouseout', () => {
+                        startHideTimer(); // Inicia el temporizador para ocultar
+                    });
+                });
+
+                // 7. Lógica del botón lector
+                tooltipLectorBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Evita que el clic se propague
+
+                    if (synth.speaking) {
+                        synth.cancel();
+                    }
+
+                    if (textoParaLeer) {
+                        const utterance = new SpeechSynthesisUtterance(textoParaLeer);
+                        utterance.lang = 'es-ES'; 
+                        utterance.pitch = 1;
+                        utterance.rate = 0.9; 
+                        synth.speak(utterance);
+                    }
+                });
+
+                // 8. NUEVOS EVENTOS: Mantener el tooltip visible
+                
+                // Cuando el cursor entra EN EL GLOBO DE AYUDA
+                tooltipAsistente.addEventListener('mouseover', cancelHideTimer);
+                // Cuando el cursor sale DEL GLOBO DE AYUDA
+                tooltipAsistente.addEventListener('mouseout', startHideTimer);
+            }
+            /* --- FIN: LÓGICA DEL ASISTENTE TOOLTIP --- */
+
+        });
+    </script>
+</body>
+</html>
